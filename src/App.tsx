@@ -2,8 +2,12 @@
 import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import {ProductCreate, ProductEdit, ProductList} from "./compoent/productList";
+import {FirebaseAuthProvider} from "react-admin-firebase";
+import {UserList} from "./compoent/userList";
+import {TransactionList} from "./compoent/transactionList";
 import InventoryIcon from '@mui/icons-material/Inventory';
-import {FirebaseAuthProvider, FirebaseDataProvider} from "react-admin-firebase";
+import PeopleIcon from '@mui/icons-material/People';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 const config = {
   apiKey: "AIzaSyAfLCbgiJftYLULD8VLM8PZvmjsZ98MA_A",
@@ -29,6 +33,16 @@ export const App = () => (
                 edit={ProductEdit}
                 create={ProductCreate}
                 icon={InventoryIcon}
+      />
+
+      <Resource name="user"
+                list={UserList}
+                icon={PeopleIcon}
+      />
+
+      <Resource name="transaction"
+                list={TransactionList}
+                icon={ReceiptIcon}
       />
 
     </Admin>
