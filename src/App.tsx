@@ -8,20 +8,20 @@ import {TransactionList} from "./compoent/transactionList";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PeopleIcon from '@mui/icons-material/People';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import TransactionShow from "./compoent/tracsactionShow";
+import {firebaseConfig} from "./authServer/firebaseconfig";
 
-const config = {
-  apiKey: "AIzaSyAfLCbgiJftYLULD8VLM8PZvmjsZ98MA_A",
-  authDomain: "fsse2309-project-lucas.firebaseapp.com",
-  projectId: "fsse2309-project-lucas",
-  storageBucket: "fsse2309-project-lucas.appspot.com",
-  messagingSenderId: "736268366666",
-  appId: "1:736268366666:web:e0f0e9366fbf6e4a9487b3",
-  measurementId: "G-LFJ1JL8M5Y"
+
+const options = {
+      logging: true,
+      persistence: 'local',
 };
 
-const options = {};
+const authProvider = FirebaseAuthProvider(firebaseConfig, options);
 
-const authProvider = FirebaseAuthProvider(config, options);
+
+
+
 
 export const App = () => (
     <Admin
@@ -33,15 +33,18 @@ export const App = () => (
                 edit={ProductEdit}
                 create={ProductCreate}
                 icon={InventoryIcon}
+                // recordRepresentation={(record) => `${record.name}`}
       />
 
       <Resource name="user"
                 list={UserList}
                 icon={PeopleIcon}
+                // recordRepresentation={(record) => `${record.email}`}
       />
 
       <Resource name="transaction"
-                list={TransactionList}
+                list={ListGuesser}
+                show={TransactionShow}
                 icon={ReceiptIcon}
       />
 

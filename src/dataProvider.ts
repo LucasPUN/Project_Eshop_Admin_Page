@@ -1,9 +1,31 @@
 import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
+import {FirebaseAuthProvider} from "react-admin-firebase";
+import {firebaseConfig} from "./authServer/firebaseconfig";
 
 
 const apiUrl = 'http://localhost:8080';
 const httpClient = fetchUtils.fetchJson;
+const headers = new Headers();
+
+const getAccessToken = () => {
+  const userDataString = localStorage.getItem('firebase:authUser:AIzaSyAfLCbgiJftYLULD8VLM8PZvmjsZ98MA_A:[DEFAULT]');
+  return  JSON.parse(userDataString).stsTokenManager.accessToken ;
+}
+
+const addBearerToken = (headers:any) => {
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    headers.set('Authorization', `Bearer ${accessToken}`);
+  }
+};
+
+try {
+  addBearerToken(headers);
+} catch (error) {
+  console.error('Failed to get access token:', error.message);
+  // Optionally, redirect to login or show an error message to the user
+}
 
 export const dataProvider: DataProvider = {
   getList: (resource, params) => {
@@ -23,7 +45,7 @@ export const dataProvider: DataProvider = {
   },
 
   getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+    httpClient(`${apiUrl}/${resource}/${params.id}`,{headers}).then(({ json }) => ({
       data: json,
     })),
 
